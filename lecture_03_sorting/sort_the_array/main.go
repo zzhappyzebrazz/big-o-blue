@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // given an array of distinct number
 // check is it possible to reverse a segment of array a so that the array is sorted
 /*
@@ -18,9 +16,9 @@ no
 */
 
 func main() {
-	var n, temp int
-	fmt.Scanf("%d\n", &n)
-	for int
+	// var n, temp int
+	// fmt.Scanf("%d\n", &n)
+	// for int
 }
 
 func arrayReverse(arr []int) {
