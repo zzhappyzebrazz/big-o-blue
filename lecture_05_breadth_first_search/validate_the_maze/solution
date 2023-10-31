@@ -1,0 +1,123 @@
+bool vis[21][21];
+
+void bfs(int i/*sx*/, int j/*sy*/, char mat[][21])
+{
+    // is this the visited table, initialize all the value of visited table to false
+    memset(vis, false, sizeof(vis));
+    vis[i][j] = true;
+    // the bsf queue, the queue now hold the value (x, y) of the next node
+    queue<pair<int, int>> q;
+    // mp = make_pair
+    q.push(mp(i, j));
+    while (!q.empty())
+    {
+        pair<int, int> p = q.front();
+        q.pop();
+        int x = p.F;
+        int y = p.S;
+        vector<pair<int, int>> v;
+        // the vector hold all the 4 point the current node can go to
+        /*
+            1        
+        2   s   3
+            4
+        */
+        v.pb(mp(x + 1, y));//3
+        v.pb(mp(x, y + 1));//4
+        v.pb(mp(x - 1, y));//2
+        v.pb(mp(x, y - 1));//1
+        // loop through all the point can go
+        for (auto pp : v)
+        {
+            int xx = pp.F;//pp.first
+            int yy = pp.S;//pp.second
+            // check the matrix bounder make sure it inside the maze
+            if (xx >= 1 /*x not negative*/&& xx <= m && yy >= 1 && yy <= n)
+            {
+                // if we hit '.' -> land, can go to
+                if (!vis[xx][yy] && mat[xx][yy] == '.')
+                {
+                    // visited table for the point
+                    vis[xx][yy] = true;
+                    // push the point the the queue, make the algorithm continue
+                    q.push(mp(xx, yy));
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    int t;
+    // read num test case
+    si(t);
+    while (t--)
+    {
+        sii(m, n);
+        // create the matrix
+        char mat[21][21];
+        for (int i = 1; i < 21; i++)
+        {
+            // fill all the matrix with #
+            for (int j = 1; j < 21; j++)
+                mat[i][j] = '#';
+        }
+        // count the number of opening point
+        int openings = 0;
+        // coordinates of the start and end points (x, y)
+        int sx = 0, sy = 0, ex = 0, ey = 0;
+        for (int i = 1; i <= m; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                // loop through i, j to fill the matrix
+                sch(mat[i][j]);
+                // check the edges side for openings
+                if (i == 1 || i == m || j == 1 || j == n)
+                {
+                    if (mat[i][j] == '.')
+                    {
+                        openings++;
+                        // choose once to be the start
+                        if (sx == 0 && sy == 0)
+                        {
+                            sx = i;
+                            sy = j;
+                        }
+                        // the other for the end
+                        else
+                        {
+                            ex = i;
+                            ey = j;
+                        }
+                    }
+                }
+            }
+        }
+        // a maze with more than 2 opening points is invalid
+        if (openings != 2)
+            printf("invalid\n");
+        else
+        {
+            // called bsf
+            // we dont need to count the cost or print out the path so the is no need for the path table
+            bfs(sx, sy, mat);
+            // bool vis[21][21];
+            // check if with the end(x, y) in the visited map is true or false
+            if (vis[ex][ey])
+                printf("valid\n");
+            else
+                printf("invalid\n");
+        }
+    }
+    return 0;
+}
+
+
+1
+4 4
+####
+#...
+#.##
+#.##
