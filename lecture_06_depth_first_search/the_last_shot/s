@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define ld long double
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define vl vector< ll >
+using namespace std;
+void dfs(vector< vector<int> > &bomb,bool visit[],int b,int &temp)
+{
+	temp++;
+	visit[b]=true;
+	for(int i=0;i<bomb[b].size();i++)
+	{
+		int a=bomb[b][i];
+		if(!visit[a])
+			dfs(bomb,visit,a,temp);
+	}
+}
+int main()
+{
+	int n,m;
+	scanf("%d%d",&n,&m);
+	vector< vector<int> >bomb(n+1);
+	while(m--)
+	{
+		int a,b;
+		scanf("%d%d",&a,&b);
+        // only push back on one side
+		bomb[a].push_back(b);
+	}
+	bool visit[n+1];
+	int res=0;
+	for(int i=1;i<=n;i++)
+	{
+        // set the visited table to all false
+		memset(visit,false,sizeof(visit));
+		int temp=0;//counting
+		dfs(bomb,visit,i,temp);
+		res=max(temp,res);
+	}
+	printf("%d",res);
+	return 0;
+}
+
+5 5
+1 2
+1 3
+4 3
+4 5
+5 2 
